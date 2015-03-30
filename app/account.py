@@ -11,7 +11,7 @@ class Account:
 
 	def deposit(self, amount):
 		self.balance += amount
-		self.bonus += amount/10
+		self.bonus += amount/5
 
 	def show_balance(self):
 		return self.balance

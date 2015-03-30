@@ -43,7 +43,7 @@ def credit_account():
 	amount = int(request.json["amount"])
 	depositCommand = DepositCommand(find_account(request.json["account"]), amount)
 	bank.execute(depositCommand)
-	bonus = amount/10
+	bonus = amount/5
 
 	logging.debug("Custom credit operation")
 	message = "Deposit of " + str(request.json["amount"]) + " to account "+str(request.json["account"])+". Bonus of "+ str(bonus) +" credited."
