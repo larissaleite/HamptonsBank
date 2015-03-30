@@ -43,7 +43,8 @@ def credit_account():
 	bank.execute(depositCommand)
 
 	logging.debug("Credit operation")
-	return ""
+	message = "Deposit of " + str(request.json["amount"]) + " to account "+str(request.json["account"])
+	return message
 
 @app.route('/balance', methods=['POST'])
 def balance_account():
