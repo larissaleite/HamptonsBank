@@ -76,6 +76,7 @@ def bonus():
 	bonusCommand = BonusCommand(find_account(request.json["account"]))
 	bonus = bank.execute(bonusCommand)
 
+	message = "Bonus balance: "+str(bonus)+". Continue using our services to accumulate bonus."
 	return str(bonus)
 
 if __name__ == '__main__':
