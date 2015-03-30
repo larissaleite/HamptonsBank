@@ -112,6 +112,9 @@
 		                //console.log(response);
 		                $('#modal-transfer').modal('toggle');
 		                $('#transfer-amount').val('');
+
+		                $('#messages').addClass("alert alert-success");
+		                $('#messages').append(response);
 		            },
 		            error: function(error) {
 		                console.log(error);

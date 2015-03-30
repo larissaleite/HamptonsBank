@@ -66,7 +66,8 @@ def transfer():
 	bank.execute(transferCommand)
 
 	logging.debug("Transfer operation")
-	return ""
+	message = "Transfer of " + str(request.json["amount"]) + " to account "+str(request.json["account_to"])
+	return message
 
 if __name__ == '__main__':
 	app.secret_key = 'secret key'
