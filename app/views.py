@@ -16,9 +16,9 @@ def find_account(id):
 
 @app.route('/', methods = ['GET'])
 def home():
-	account_1 = Account(1, 200)
-	account_2 = Account(2, 250)
-	account_3 = Account(3, 100)
+	account_1 = Account(1, 200, 0)
+	account_2 = Account(2, 250, 0)
+	account_3 = Account(3, 100, 0)
 
 	global accounts
 	accounts = [account_1, account_2, account_3]
