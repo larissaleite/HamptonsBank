@@ -1,0 +1,259 @@
+<html>
+
+	<head>
+		<link rel="stylesheet" type="text/css" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.2/css/bootstrap.min.css">
+		<link rel="stylesheet" href="https://netdna.bootstrapcdn.com/font-awesome/4.0.3/css/font-awesome.min.css">
+		<link href='http://fonts.googleapis.com/css?family=Raleway' rel='stylesheet' type='text/css'>
+
+		<script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/2.1.1/jquery.js"></script>
+		<script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.2/js/bootstrap.min.js"></script>
+
+	</head>
+
+	<style type="text/css">
+
+		body {
+			margin-top: 6%;
+		}
+
+		.main > h3 {
+			text-align: center;
+		}
+
+		table, th {
+			text-align: center;
+		}
+
+		span {
+			margin-right:10%;
+		}
+
+	</style>
+
+	<script type="text/javascript">
+		var account;
+
+		function set_account(account_id) {
+			account = account_id;
+			console.log(account);
+		}
+
+		$(document).ready(function(){
+
+			$('#credit-btn').click(function() {
+				var account = window.account;
+		        var amount = $('#credit-amount').val();
+		        $.ajax({
+		            url: '/credit',
+		            contentType: 'application/json',
+		            data: JSON.stringify({
+		              amount: amount,
+		              account: account
+		            }),
+		            type: 'POST',
+		            success: function(response) {
+		                //console.log(response);
+		                $('#modal-credit').modal('toggle');
+		                $('#debit-amount').val('');
+		            },
+		            error: function(error) {
+		                console.log(error);
+		            }
+		        });
+			});
+
+			$('#debit-btn').click(function() {
+				var account = window.account;
+		        var amount = $('#debit-amount').val();
+		        $.ajax({
+		            url: '/debit',
+		            contentType: 'application/json',
+		            data: JSON.stringify({
+		              amount: amount,
+		              account: account
+		            }),
+		            type: 'POST',
+		            success: function(response) {
+		                //console.log(response);
+		                $('#modal-debit').modal('toggle');
+		                $('#debit-amount').val('');
+		            },
+		            error: function(error) {
+		                console.log(error);
+		            }
+		        });
+			});
+
+			$('#transfer-btn').click(function() {
+				var account_from = window.account;
+				var account_to = $('#select-account').find(":selected").attr("name");
+		        var amount = $('#transfer-amount').val();
+		        $.ajax({
+		            url: '/transfer',
+		            contentType: 'application/json',
+		            data: JSON.stringify({
+		              amount: amount,
+		              account_from: account_from,
+		              account_to: account_to
+		            }),
+		            type: 'POST',
+		            success: function(response) {
+		                //console.log(response);
+		                $('#modal-transfer').modal('toggle');
+		                $('#transfer-amount').val('');
+		            },
+		            error: function(error) {
+		                console.log(error);
+		            }
+		        });
+			});
+
+			$('.balance-btn').click(function() {
+				var account = window.account;
+				console.log("posting balance for account "+account)
+
+		        $.ajax({
+		            url: '/balance',
+		           	contentType: 'application/json',
+		            data: JSON.stringify({
+		              account: account
+		            }),
+		            type: 'POST',
+		            success: function(response) {
+		                console.log("resp "+response);
+		                $('#balance-value').html("Balance: $"+response)
+		            },
+		            error: function(error) {
+		                console.log(error);
+		            }
+		        });
+			});
+		});
+	</script>
+
+	<body>
+
+		<div class="row">
+		
+			<div class="col-md-3">
+			</div>
+
+			<div class="col-md-6 main">
+				<h3>Hamptons Bank</h3>
+				<br/>
+				<table class="table table-hover">
+					<thead>
+						<tr>
+							<th>Account</th>
+							<th>Operations</th>
+						</tr>
+					</thead>
+					<tbody>
+						{% for account in accounts %}
+						<tr>
+							<td>{{ account.id }}</td>
+							<td>
+								<button onclick="set_account({{ account.id }})" class="balance-btn btn btn-default" data-toggle="modal" data-target="#modal-balance"><span class="glyphicon glyphicon-usd"></span></button>
+								<button onclick="set_account({{ account.id }})" class="btn btn-success" data-toggle="modal" data-target="#modal-credit"><span class="glyphicon glyphicon-log-in"></span></button>
+								<button onclick="set_account({{ account.id }})" class="btn btn-danger" data-toggle="modal" data-target="#modal-debit"><span class="glyphicon glyphicon-log-out"></span></button>
+								<button onclick="set_account({{ account.id }})" class="btn btn-warning" data-toggle="modal" data-target="#modal-transfer"><span class="glyphicon glyphicon-transfer"></span></button>
+							</td>
+						</tr>
+						{% endfor %}
+					</tbody>
+				</table>
+				
+			</div>
+
+			<div class="col-md-3">
+			</div>
+
+			<!-- Modals -->
+			<div class="modal fade" id="modal-credit" role="dialog">
+			  <div class="modal-dialog">
+			    <div class="modal-content">
+			    	<div class="modal-header">
+			        	<button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
+			        	<h4 class="modal-title">Credit</h4>
+			      	</div>
+			      	<form action="/credit" method="POST">
+				      	<div class="modal-body">
+				        	<input id="credit-amount" class="form-control" type="text" placeholder="Amount" />
+				      	</div>
+				      	<div class="modal-footer">
+				       		<button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
+				        	<button type="button" id="credit-btn" class="btn btn-primary">Execute</button>
+				      	</div>
+				    </form>
+			    </div><!-- /.modal-content -->
+			  </div><!-- /.modal-dialog -->
+			</div><!-- /.modal -->
+
+			<div class="modal fade" id="modal-debit" role="dialog">
+			  <div class="modal-dialog">
+			    <div class="modal-content">
+			    	<div class="modal-header">
+				        <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
+				        <h4 class="modal-title">Debit</h4>
+				    </div>
+				    <form action="/debit" method="POST">
+					    <div class="modal-body">
+					        <input id="debit-amount" class="form-control" type="text" placeholder="Amount" />
+					    </div>
+					    <div class="modal-footer">
+					        <button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
+					        <button type="button" id="debit-btn" class="btn btn-primary">Execute</button>
+					    </div>
+					</form>
+			    </div><!-- /.modal-content -->
+			  </div><!-- /.modal-dialog -->
+			</div><!-- /.modal -->
+
+			<div class="modal fade" id="modal-transfer" role="dialog">
+			  <div class="modal-dialog">
+			    <div class="modal-content">
+			    	<div class="modal-header">
+			        	<button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
+			        	<h4 class="modal-title">Transfer</h4>
+			      	</div>
+			      	<form action="/transfer" method="POST">
+				    	<div class="modal-body">
+					        <input id="transfer-amount" class="form-control" type="text" placeholder="Amount" />
+					        <br/>
+					        <label>To:</label>
+					        <select class="form-control" id="select-account">
+					        {% for account in accounts %}
+					        	<option name="{{ account.id }}">Account {{ account.id }}</option>
+					        {% endfor %}
+					        </select>
+				      	</div>
+				      	<div class="modal-footer">
+				      		<button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
+				        	<button type="button" id="transfer-btn" class="btn btn-primary">Execute</button>
+				      	</div>
+				    </form>
+			    </div><!-- /.modal-content -->
+			  </div><!-- /.modal-dialog -->
+			</div><!-- /.modal -->
+
+			<div class="modal fade" id="modal-balance" role="dialog">
+			  <div class="modal-dialog">
+			    <div class="modal-content">
+			      <div class="modal-header">
+			        <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
+			        <h4 class="modal-title">Balance</h4>
+			      </div>
+			      <div class="modal-body">
+			        <p id="balance-value"></p>
+			      </div>
+			      <div class="modal-footer">
+			        <button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
+			      </div>
+			    </div><!-- /.modal-content -->
+			  </div><!-- /.modal-dialog -->
+			</div><!-- /.modal -->
+
+		</div>
+	</body>
+
+</html>
