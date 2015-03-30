@@ -77,7 +77,7 @@ def bonus():
 	bonus = bank.execute(bonusCommand)
 
 	message = "Bonus balance: "+str(bonus)+". Continue using our services to accumulate bonus."
-	return str(bonus)
+	return message
 
 if __name__ == '__main__':
 	app.secret_key = 'secret key'
