@@ -32,7 +32,7 @@ def debit_account():
 	withdrawCommand = WithdrawCommand(find_account(request.json["account"]), int(request.json["amount"]))
 	bank.execute(withdrawCommand)
 
-	logging.debug("Debit operation")
+	logging.debug("Custom debit operation")
 	message = "Withdraw of " + str(request.json["amount"]) + " to account "+str(request.json["account"])
 	return message
 
@@ -45,7 +45,7 @@ def credit_account():
 	bank.execute(depositCommand)
 	bonus = amount/10
 
-	logging.debug("Credit operation")
+	logging.debug("Custom credit operation")
 	message = "Deposit of " + str(request.json["amount"]) + " to account "+str(request.json["account"])+". Bonus of "+ str(bonus) +" credited."
 	return message
 
@@ -56,7 +56,7 @@ def balance_account():
 	balanceCommand = BalanceCommand(find_account(request.json["account"]))
 	balance = bank.execute(balanceCommand)
 
-	logging.debug("Balance operation")
+	logging.debug("Cusstom balance operation")
 	return str(balance)
 
 @app.route('/transfer', methods=['POST'])
@@ -67,7 +67,7 @@ def transfer():
 	transferCommand = TransferCommand(find_account(request.json["account_from"]), find_account(int(request.json["account_to"])), int(request.json["amount"]))
 	bank.execute(transferCommand)
 
-	logging.debug("Transfer operation")
+	logging.debug("Custom transfer operation")
 	message = "Transfer of " + str(request.json["amount"]) + " to account "+str(request.json["account_to"])
 	return message
 
@@ -79,6 +79,7 @@ def bonus():
 	bonus = bank.execute(bonusCommand)
 
 	message = "Bonus balance: "+str(bonus)+". Continue using our services to accumulate bonus."
+	logging.debug("Custom bonus operation")
 	return message
 
 if __name__ == '__main__':
