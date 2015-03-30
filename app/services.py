@@ -39,3 +39,11 @@ class TransferCommand(Command):
 	def execute(self):
 		self.account_from.withdraw(self.amount)
 		self.account_to.deposit(self.amount)
+
+class BonusCommand(Command):
+
+	def __init__(self, account):
+		self.account = account
+
+	def execute(self):
+		return self.account.show_bonus()

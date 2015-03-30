@@ -15,3 +15,6 @@ class Account:
 
 	def show_balance(self):
 		return self.balance
+
+	def show_bonus(self):
+		return self.bonus

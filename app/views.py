@@ -69,6 +69,15 @@ def transfer():
 	message = "Transfer of " + str(request.json["amount"]) + " to account "+str(request.json["account_to"])
 	return message
 
+@app.route('/bonus', methods=['POST'])
+def bonus():
+	bank = Bank()
+
+	bonusCommand = BonusCommand(find_account(request.json["account"]))
+	bonus = bank.execute(bonusCommand)
+
+	return str(bonus)
+
 if __name__ == '__main__':
 	app.secret_key = 'secret key'
 	app.run(debug=True)
