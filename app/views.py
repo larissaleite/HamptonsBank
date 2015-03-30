@@ -33,7 +33,8 @@ def debit_account():
 	bank.execute(withdrawCommand)
 
 	logging.debug("Debit operation")
-	return ""
+	message = "Withdraw of " + str(request.json["amount"]) + " to account "+str(request.json["account"])
+	return message
 
 @app.route('/credit', methods=['POST'])
 def credit_account():

@@ -41,7 +41,7 @@
 		$(document).ready(function(){
 
 			$('.btn').click(function(){
-				$('#messages').removeClass("alert alert-success");
+				$('#messages').removeClass();
 		        $('#messages').empty();
 			});
 
@@ -61,7 +61,7 @@
 		                $('#modal-credit').modal('toggle');
 		                $('#debit-amount').val('');
 
-		                 $('#messages').addClass("alert alert-success");
+		                $('#messages').addClass("alert alert-success");
 		                $('#messages').append(response);
 		            },
 		            error: function(error) {
@@ -85,6 +85,9 @@
 		                //console.log(response);
 		                $('#modal-debit').modal('toggle');
 		                $('#debit-amount').val('');
+
+		                $('#messages').addClass("alert alert-success");
+		                $('#messages').append(response);
 		            },
 		            error: function(error) {
 		                console.log(error);
