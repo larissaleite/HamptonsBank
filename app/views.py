@@ -40,11 +40,13 @@ def debit_account():
 def credit_account():
 	bank = Bank()
 
-	depositCommand = DepositCommand(find_account(request.json["account"]), int(request.json["amount"]))
+	amount = int(request.json["amount"])
+	depositCommand = DepositCommand(find_account(request.json["account"]), amount)
 	bank.execute(depositCommand)
+	bonus = amount/10
 
 	logging.debug("Credit operation")
-	message = "Deposit of " + str(request.json["amount"]) + " to account "+str(request.json["account"])
+	message = "Deposit of " + str(request.json["amount"]) + " to account "+str(request.json["account"])+". Bonus of "+ str(bonus) +" credited."
 	return message
 
 @app.route('/balance', methods=['POST'])
