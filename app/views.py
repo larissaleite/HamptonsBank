@@ -29,11 +29,20 @@ def home():
 def debit_account():
 	bank = Bank()
 
-	withdrawCommand = WithdrawCommand(find_account(request.json["account"]), int(request.json["amount"]))
-	bank.execute(withdrawCommand)
+	balanceCommand = BalanceCommand(find_account(request.json["account"]))
+	balance = bank.execute(balanceCommand)
+
+	amount = int(request.json["amount"])
+
+	if (balance-amount < 2):
+		message = "Not possible to withdraw this amount from this account. Minimum balance is R$2,00"
+	else:	
+		message = "Withdraw of " + str(request.json["amount"]) + " to account "+str(request.json["account"])
+
+		withdrawCommand = WithdrawCommand(find_account(request.json["account"]), amount)
+		bank.execute(withdrawCommand)
 
 	logging.debug("Debit operation")
-	message = "Withdraw of " + str(request.json["amount"]) + " to account "+str(request.json["account"])
 	return message
 
 @app.route('/credit', methods=['POST'])
