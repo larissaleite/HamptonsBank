@@ -16,9 +16,9 @@ def find_account(id):
 
 @app.route('/', methods = ['GET'])
 def home():
-	account_1 = Account(1, 200, 0)
-	account_2 = Account(2, 250, 0)
-	account_3 = Account(3, 100, 0)
+	account_1 = Account(1, 200, 0, 0)
+	account_2 = Account(2, 250, 0, 0)
+	account_3 = Account(3, 100, 0, 0)
 
 	global accounts
 	accounts = [account_1, account_2, account_3]
@@ -52,7 +52,7 @@ def credit_account():
 	amount = int(request.json["amount"])
 	depositCommand = DepositCommand(find_account(request.json["account"]), amount)
 	bank.execute(depositCommand)
-	bonus = amount/5
+	bonus = amount/3
 
 	logging.debug("Credit operation")
 	message = "Deposit of " + str(request.json["amount"]) + " to account "+str(request.json["account"])+". Bonus of "+ str(bonus) +" credited."
@@ -89,6 +89,17 @@ def bonus():
 
 	message = "Bonus balance: "+str(bonus)+". Continue using our services to accumulate bonus."
 	return message
+
+@app.route('/credit_savings', methods=['POST'])
+def credit_savings():
+	bank = Bank()
+
+	amount = int(request.json["amount"])
+	depositSavingsCommand = DepositSavingsCommand(find_account(request.json["account"]), amount)
+	bank.execute(depositSavingsCommand)
+
+	logging.debug("Credit savings operation")
+	return ""
 
 if __name__ == '__main__':
 	app.secret_key = 'secret key'

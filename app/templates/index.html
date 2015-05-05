@@ -59,7 +59,7 @@
 		            success: function(response) {
 		                //console.log(response);
 		                $('#modal-credit').modal('toggle');
-		                $('#debit-amount').val('');
+		                $('#credit-amount').val('');
 
 		                $('#messages').addClass("alert alert-success");
 		                $('#messages').append(response);
@@ -161,6 +161,29 @@
 		            }
 		        });
 			});
+
+			$('#credit-savings-btn').click(function() {
+				var account = window.account;
+		        var amount = $('#credit-savings-amount').val();
+		        $.ajax({
+		            url: '/credit_savings',
+		            contentType: 'application/json',
+		            data: JSON.stringify({
+		              amount: amount,
+		              account: account
+		            }),
+		            type: 'POST',
+		            success: function(response) {
+		                //console.log(response);
+		                $('#modal-credit-savings').modal('toggle');
+		                $('#credit-savings-amount').val('');
+		            },
+		            error: function(error) {
+		                console.log(error);
+		            }
+		        });
+			});
+
 		});
 	</script>
 
@@ -193,6 +216,7 @@
 								<button onclick="set_account({{ account.id }})" class="btn btn-danger" data-toggle="modal" data-target="#modal-debit"><span class="glyphicon glyphicon-log-out"></span></button>
 								<button onclick="set_account({{ account.id }})" class="btn btn-warning" data-toggle="modal" data-target="#modal-transfer"><span class="glyphicon glyphicon-transfer"></span></button>
 								<button onclick="set_account({{ account.id }})" class="bonus-btn btn btn-primary" data-toggle="modal" data-target="#modal-bonus"><span class="glyphicon glyphicon-gift"></span></button>
+								<button onclick="set_account({{ account.id }})" class="bonus-btn btn btn-success" data-toggle="modal" data-target="#modal-credit-savings"><span class="glyphicon glyphicon-new-window"></span></button>
 							</td>
 						</tr>
 						{% endfor %}
@@ -306,6 +330,26 @@
 			      <div class="modal-footer">
 			        <button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
 			      </div>
+			    </div><!-- /.modal-content -->
+			  </div><!-- /.modal-dialog -->
+			</div><!-- /.modal -->
+
+			<div class="modal fade" id="modal-credit-savings" role="dialog">
+			  <div class="modal-dialog">
+			    <div class="modal-content">
+			    	<div class="modal-header">
+			        	<button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
+			        	<h4 class="modal-title">Credit to savings</h4>
+			      	</div>
+			      	<form action="/credit_savings" method="POST">
+				      	<div class="modal-body">
+				        	<input id="credit-savings-amount" class="form-control" type="text" placeholder="Amount" />
+				      	</div>
+				      	<div class="modal-footer">
+				       		<button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
+				        	<button type="button" id="credit-savings-btn" class="btn btn-primary">Execute</button>
+				      	</div>
+				    </form>
 			    </div><!-- /.modal-content -->
 			  </div><!-- /.modal-dialog -->
 			</div><!-- /.modal -->

@@ -47,3 +47,12 @@ class BonusCommand(Command):
 
 	def execute(self):
 		return self.account.show_bonus()
+
+class DepositSavingsCommand(Command):
+
+	def __init__(self, account, amount):
+		self.account = account
+		self.amount = amount
+
+	def execute(self):
+		self.account.deposit_savings(self.amount)
