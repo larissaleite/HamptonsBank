@@ -99,7 +99,8 @@ def credit_savings():
 	bank.execute(depositSavingsCommand)
 
 	logging.debug("Credit savings operation")
-	return ""
+	message = "Deposit of " + str(request.json["amount"]) + " to account "+str(request.json["account"])
+	return message
 
 if __name__ == '__main__':
 	app.secret_key = 'secret key'

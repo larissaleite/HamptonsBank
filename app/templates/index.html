@@ -177,6 +177,9 @@
 		                //console.log(response);
 		                $('#modal-credit-savings').modal('toggle');
 		                $('#credit-savings-amount').val('');
+
+		                $('#messages').addClass("alert alert-success");
+		                $('#messages').append(response);
 		            },
 		            error: function(error) {
 		                console.log(error);
