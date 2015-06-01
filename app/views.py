@@ -105,4 +105,4 @@ def credit_savings():
 if __name__ == '__main__':
 	app.secret_key = 'secret key'
 	from os import environ
-	app.run(debug=True, host='0.0.0.0', port=environ.get("PORT", 5000))
+	app.run(debug=True, port=int(environ.get("PORT", 5000)), processes=1)
