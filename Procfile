@@ -1,1 +1,1 @@
-web: python app/views.py ${PORT}
+web: python app/views.py
