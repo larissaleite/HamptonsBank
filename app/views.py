@@ -4,6 +4,7 @@ from account import *
 from bank import *
 from services import *
 import logging
+import pdb
 
 accounts = []
   
@@ -37,7 +38,7 @@ def debit_account():
 	if (balance-amount < 2):
 		message = "Not possible to withdraw this amount from this account. Minimum balance is R$2,00"
 	else:	
-		message = "Withdraw of " + str(request.json["amount"]) + " to account "+str(request.json["account"])
+		message = "Withdraw of " + str(request.json["amount"]) + " from account "+str(request.json["account"])
 
 		withdrawCommand = WithdrawCommand(find_account(request.json["account"]), amount)
 		bank.execute(withdrawCommand)
@@ -50,12 +51,14 @@ def credit_account():
 	bank = Bank()
 
 	amount = int(request.json["amount"])
-	depositCommand = DepositCommand(find_account(request.json["account"]), amount)
+	account = int(request.json["account"])
+
+	depositCommand = DepositCommand(find_account(account), amount)
 	bank.execute(depositCommand)
 	bonus = amount/3
 
 	logging.debug("Credit operation")
-	message = "Deposit of " + str(request.json["amount"]) + " to account "+str(request.json["account"])+". Bonus of "+ str(bonus) +" credited."
+	message = "Deposit of " + str(request.json["amount"]) + " to account "+str(account)+". Bonus of "+ str(bonus) +" credited."
 	return message
 
 @app.route('/balance', methods=['POST'])
