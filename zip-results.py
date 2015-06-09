@@ -1,6 +1,6 @@
 import os, zipfile, requests
 
-def download_project_commit():
+def download_project():
 	master_commit = requests.get('https://github.com/larissaleite/HamptonsBank/archive/master.zip')
 
 	output = open("results/master_code.zip", "w")
@@ -13,7 +13,7 @@ def zipdir(path, ziph):
 			ziph.write(os.path.join(root, file))
 
 if __name__ == '__main__':
-	download_project_commit()
+	download_project()
 
 	zipf = zipfile.ZipFile('build-result.zip', 'w')
 	zipdir('results', zipf)
